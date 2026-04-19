@@ -1,0 +1,11 @@
+region                = "us-east-1"
+vpc_name              = "much-to-do-vpc"
+vpc_cidr              = "10.0.0.0/16"
+project_suffix        = "alt-soe-025-1318"
+backend_instance_type = "t3.micro"
+mongodb_instance_type = "t3.small"
+redis_node_type       = "cache.t3.micro"
+mongo_db_name         = "muchtodo"
+developer_username    = "muchtodo-dev-view"
+cloudfront_price_class = "PriceClass_100"
+# jwt_secret_key is provided via GitHub Actions secret: TF_VAR_jwt_secret_key

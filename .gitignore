@@ -1,0 +1,25 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Sensitive
+*.pem
+*.key
+.env
+*.env.local
+
+# Build artifacts
+lambda/*.zip
+
+# OS
+.DS_Store

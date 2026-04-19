@@ -1,0 +1,43 @@
+{
+  "vpc_id": {
+    "value": "vpc-0a1b2c3d4e5f67890"
+  },
+  "alb_dns_name": {
+    "value": "much-to-do-alb-1234567890.us-east-1.elb.amazonaws.com"
+  },
+  "cloudfront_domain_name": {
+    "value": "https://d1234abcd5678.cloudfront.net"
+  },
+  "cloudfront_distribution_id": {
+    "value": "ABCDEFGHIJKLMN"
+  },
+  "s3_frontend_bucket": {
+    "value": "much-to-do-frontend-alt-soe-025-1318"
+  },
+  "backend_instance_ids": {
+    "value": ["i-0abc123def456789a", "i-0abc123def456789b"]
+  },
+  "backend_private_ips": {
+    "value": ["10.0.11.10", "10.0.12.10"]
+  },
+  "mongodb_private_ip": {
+    "value": "10.0.21.10"
+  },
+  "redis_endpoint": {
+    "value": "much-to-do-redis.abc123.0001.use1.cache.amazonaws.com:6379"
+  },
+  "cloudwatch_log_group": {
+    "value": "/much-to-do/backend"
+  },
+  "region": {
+    "value": "us-east-1"
+  },
+  "developer_access_key_id": {
+    "value": "AKIAIOSFODNN7EXAMPLE",
+    "sensitive": true
+  },
+  "developer_secret_access_key": {
+    "value": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    "sensitive": true
+  }
+}
