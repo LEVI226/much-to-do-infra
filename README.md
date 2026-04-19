@@ -20,7 +20,7 @@ AltSchool Cloud Engineering — Baraka 2025 Third Semester Project.
 ## Quick Start
 
 ```bash
-# 1. Bootstrap remote state (once only)
+# 1. Bootstrap remote state (run once)
 cd terraform/backend && terraform init && terraform apply
 
 # 2. Deploy everything
@@ -29,7 +29,7 @@ terraform init
 terraform apply -var="jwt_secret_key=<secret>"
 ```
 
-See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for the full walkthrough.
+See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for details.
 
 ## Repository Structure
 
@@ -69,6 +69,6 @@ See [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md).
 
 ## CI/CD
 
-GitHub Actions runs `terraform plan` on every Pull Request and `terraform apply` on every merge to `main`. The `grading.json` artifact is uploaded after each successful apply.
+GitHub Actions runs `terraform plan` on every pull request and `terraform apply` on every merge to `main`. GitHub Actions uploads `grading.json` after each apply.
 
 Required secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `JWT_SECRET_KEY`.

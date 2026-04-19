@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Much-To-Do application is deployed on AWS across two Availability Zones for high availability. All compute and data resources run in private subnets. Only the ALB and CloudFront are internet-facing.
+Much-To-Do runs across two Availability Zones. All compute and data resources sit in private subnets. Only the ALB and CloudFront accept internet traffic.
 
 ```
 Internet
@@ -36,9 +36,9 @@ Internet
 | Private Data Subnet AZ-a | 10.0.21.0/24 | MongoDB EC2 |
 | Private Data Subnet AZ-b | 10.0.22.0/24 | ElastiCache |
 
-A single NAT Gateway in the public subnet allows private instances to reach the internet for package installation and outbound calls.
+A single NAT Gateway in the public subnet gives private instances outbound internet access for package installation.
 
-## Security Group Rules (Least Privilege)
+## Security Group Rules
 
 | Security Group | Inbound | Source |
 |---|---|---|
@@ -49,21 +49,18 @@ A single NAT Gateway in the public subnet allows private instances to reach the 
 
 ## Data Flow
 
-1. User opens the CloudFront URL → CloudFront serves the React SPA from S3
-2. React app calls `VITE_API_BASE_URL` (the ALB DNS) for API requests
-3. ALB forwards requests to one of the two backend EC2 instances (round-robin)
-4. Backend reads/writes MongoDB in the private data subnet
-5. Backend uses ElastiCache Redis for username cache lookups
-6. All backend stdout/stderr is forwarded to CloudWatch Logs via the CloudWatch Agent
+1. Browser hits the CloudFront URL. CloudFront serves the React SPA from S3.
+2. React calls `VITE_API_BASE_URL` (the ALB DNS) for API requests.
+3. ALB forwards each request to one of the two backend EC2 instances.
+4. The backend reads and writes MongoDB in the private data subnet.
+5. The backend uses ElastiCache Redis for username cache lookups.
+6. The CloudWatch Agent ships all backend stdout/stderr to `/much-to-do/backend`.
 
 ## High Availability
 
-- Two backend EC2 instances in separate AZs
-- ALB performs health checks on `/ping` every 30 seconds
-- If one instance fails its health check, ALB routes all traffic to the healthy instance
-- The ALB itself is managed (multi-AZ by design)
+Two backend EC2 instances run in separate AZs. The ALB health-checks `/ping` every 30 seconds. When one instance fails three checks, the ALB stops sending it traffic. AWS manages the ALB itself across both AZs.
 
-## CI/CD Data Flow
+## CI/CD Flow
 
 ```
 Push to main
@@ -71,7 +68,7 @@ Push to main
      ├─► Infra Repo: terraform apply (infra changes only)
      │
      └─► App Repo:
-          ├─► Frontend Pipeline: npm build → S3 sync → CloudFront invalidation
-          └─► Backend Pipeline: go build → SSM deploy to EC2 #1 → health check
-                                       → SSM deploy to EC2 #2 → health check
+          ├─► Frontend: npm build → S3 sync → CloudFront invalidation
+          └─► Backend:  go build → SSM deploy to EC2 #1 → health check
+                                 → SSM deploy to EC2 #2 → health check
 ```

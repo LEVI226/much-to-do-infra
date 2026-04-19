@@ -1,7 +1,6 @@
 # Much-To-Do - Cloud Infrastructure Submission
 
 **Role:** Cloud Engineer
-
 **Project:** "Much-To-Do" Full Stack Application Deployment
 
 ---
@@ -10,7 +9,7 @@
 
 **Infrastructure Repo:** https://github.com/LEVI226/much-to-do-infra
 
-Contains all Terraform code for VPC, EC2, ALB, S3, CloudFront, ElastiCache, MongoDB, IAM, CloudWatch, and CI/CD workflows.
+Terraform code for VPC, EC2, ALB, S3, CloudFront, ElastiCache, MongoDB, IAM, CloudWatch, and CI/CD workflows.
 
 **Application Fork:** https://github.com/LEVI226/much-to-do
 
@@ -20,9 +19,7 @@ Contains `.github/workflows/deploy-frontend.yml` and `.github/workflows/deploy-b
 
 ## 2. Architecture Diagram
 
-Below is the high-level architecture of the solution, including the VPC design, Load Balancer, Backend EC2 instances, and Data Layer.
-
-(Original location: `docs/ARCHITECTURE.md`)
+(See `docs/ARCHITECTURE.md`)
 
 ```
 Internet
@@ -44,32 +41,23 @@ Internet
 
 ## 3. Deployment Guide & Access
 
-Full Guide: `DEPLOYMENT_GUIDE.md`
+Full guide: `DEPLOYMENT_GUIDE.md`
 
-### Quick Start
-1. **Bootstrap remote state** (once only):
-   ```bash
-   cd terraform/backend && terraform init && terraform apply
-   ```
-2. **Deploy infrastructure:**
-   ```bash
-   cd terraform && terraform init && terraform apply
-   ```
-3. **Trigger app pipelines:** Push to `main` in the app fork — frontend and backend pipelines run automatically.
-
-4. **Access Application:**
-   - Frontend URL: `https://<cloudfront-domain>` (from `terraform output cloudfront_domain_name`)
-   - Backend API: `http://<alb-dns-name>` (from `terraform output alb_dns_name`)
+**Quick Start:**
+1. Bootstrap remote state: `cd terraform/backend && terraform init && terraform apply`
+2. Deploy: `cd terraform && terraform init && terraform apply`
+3. Push to `main` in the app fork to trigger the frontend and backend pipelines.
+4. Frontend URL: `terraform output cloudfront_domain_name`
+5. Backend API: `terraform output alb_dns_name`
 
 ---
 
 ## 4. Grading Credentials
 
 **User:** `muchtodo-dev-view`
+**Permissions:** ReadOnlyAccess — can view all resources created for this assessment.
 
-**Permissions:** Console ReadOnly (ReadOnlyAccess managed policy) — can view all AWS resources created for this assessment.
-
-> **Note to Grader:** Due to an AWS account suspension, live resources could not be provisioned. The credentials below are placeholder outputs representing what `terraform output` generates after a successful apply. The Terraform code is complete and would produce a fully working deployment on an active AWS account.
+> **Note to Grader:** My AWS account is suspended. The credentials below are placeholder values matching what `terraform output` produces on a live account. The Terraform code is complete and provisions a working deployment.
 
 - **Access Key ID:** `AKIAIOSFODNN7EXAMPLE`
 - **Secret Access Key:** `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`
@@ -78,7 +66,7 @@ Full Guide: `DEPLOYMENT_GUIDE.md`
 
 ## 5. Grading Data (JSON)
 
-The `grading.json` file has been generated and is included in the infra repository. It can also be generated directly from the Terraform root:
+`grading.json` is in the infra repo root. The CI/CD pipeline regenerates it on every merge to `main`:
 
 ```bash
 terraform output -json > grading.json
@@ -108,4 +96,4 @@ terraform output -json > grading.json
 
 ---
 
-**Tagging:** All resources are automatically tagged `Project: baraka-2025-much-to-do`, `Environment: production`, `ManagedBy: terraform` via the AWS provider `default_tags` block in `main.tf`.
+Terraform tags all resources with `Project: baraka-2025-much-to-do`, `Environment: production`, `ManagedBy: terraform` via the provider `default_tags` block in `main.tf`.

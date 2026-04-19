@@ -2,13 +2,13 @@
 
 ## Prerequisites
 
-- AWS CLI configured with credentials that have admin access
+- AWS CLI configured with admin credentials
 - Terraform >= 1.7
 - Git
 
 ## Step 1: Bootstrap Remote State
 
-Run this once before anything else:
+Run once before deploying:
 
 ```bash
 cd terraform/backend
@@ -16,9 +16,9 @@ terraform init
 terraform apply
 ```
 
-This creates the S3 bucket and DynamoDB table used to store Terraform state.
+Creates the S3 bucket and DynamoDB lock table for Terraform state.
 
-## Step 2: Initialize and Deploy Infrastructure
+## Step 2: Deploy Infrastructure
 
 ```bash
 cd terraform
@@ -27,7 +27,7 @@ terraform plan -var="jwt_secret_key=<your-secret>"
 terraform apply -var="jwt_secret_key=<your-secret>"
 ```
 
-Expected resources: VPC, subnets, NAT Gateway, ALB, 2 EC2 backend instances, MongoDB EC2, ElastiCache Redis, S3 bucket, CloudFront distribution, CloudWatch log groups, IAM user.
+Terraform provisions: VPC, subnets, NAT Gateway, ALB, 2 EC2 backend instances, MongoDB EC2, ElastiCache Redis, S3 bucket, CloudFront distribution, CloudWatch log groups, IAM user.
 
 ## Step 3: Collect Outputs
 
@@ -35,7 +35,7 @@ Expected resources: VPC, subnets, NAT Gateway, ALB, 2 EC2 backend instances, Mon
 terraform output -json
 ```
 
-Note the following values and add them as GitHub Actions secrets in the application fork:
+Copy these values into GitHub Actions secrets in the application fork:
 
 | Output | Secret Name |
 |---|---|
@@ -51,9 +51,9 @@ Note the following values and add them as GitHub Actions secrets in the applicat
 In your forked application repository:
 
 1. Add all GitHub Actions secrets from Step 3
-2. Push to `main` — both pipelines trigger automatically
-3. Frontend pipeline deploys the React SPA to S3 and invalidates CloudFront
-4. Backend pipeline builds the Go binary and rolls it out to both EC2 instances via SSM
+2. Push to `main`. Both pipelines trigger.
+3. The frontend pipeline builds the React SPA, syncs to S3, and invalidates CloudFront.
+4. The backend pipeline builds the Go binary and rolls it to both EC2 instances via SSM.
 
 ## Step 5: Verify
 
@@ -75,4 +75,4 @@ terraform destroy -var="jwt_secret_key=<your-secret>"
 
 ## ALB Health Check
 
-The ALB checks `/ping` on port 8080 every 30 seconds. An instance becomes unhealthy after 3 consecutive failures. To test high availability, stop one EC2 instance from the AWS console — the ALB automatically routes all traffic to the remaining healthy instance within ~90 seconds.
+The ALB checks `/ping` on port 8080 every 30 seconds. An instance is marked unhealthy after 3 failures. To test failover, stop one EC2 instance from the AWS console. The ALB routes all traffic to the remaining instance within 90 seconds.
