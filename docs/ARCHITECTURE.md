@@ -2,6 +2,8 @@
 
 ## Overview
 
+![Much-To-Do Architecture](./architecture.png)
+
 Much-To-Do runs across two Availability Zones. All compute and data resources sit in private subnets. Only the ALB and CloudFront accept internet traffic.
 
 ```

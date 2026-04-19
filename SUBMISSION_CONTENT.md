@@ -19,7 +19,10 @@ Contains `.github/workflows/deploy-frontend.yml` and `.github/workflows/deploy-b
 
 ## 2. Architecture Diagram
 
-(See `docs/ARCHITECTURE.md`)
+Below is the high-level architecture of the solution, including the VPC design, Load Balancer, EC2 instances, and Data Layer.
+
+![Much-To-Do Architecture](docs/architecture.png)
+*(Original image location: `docs/architecture.png`)*
 
 ```
 Internet
