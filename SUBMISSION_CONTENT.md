@@ -12,7 +12,7 @@
 *Contains all Terraform code, deployment scripts, and CI/CD workflow for infrastructure.*
 
 **Application Fork:** [https://github.com/LEVI226/much-to-do](https://github.com/LEVI226/much-to-do)
-*Contains `.github/workflows/deploy-frontend.yml` and `.github/workflows/deploy-backend.yml`.*
+*Contains `.github/workflows/deploy-frontend.yml` and `.github/workflows/deploy-backend.yml` on the `main` branch.*
 
 ---
 
