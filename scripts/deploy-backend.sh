@@ -30,7 +30,7 @@ git fetch origin main
 git reset --hard origin/main
 cd Server/MuchToDo
 HOME=/root go build -o /opt/much-to-do/server ./cmd/api/
-chown muchtodo:muchtodo /opt/much-to-do/server
+sudo chown muchtodo:muchtodo /opt/much-to-do/server
 sudo systemctl restart much-to-do
 sleep 5
 systemctl is-active much-to-do && echo DEPLOY_OK || { echo DEPLOY_FAILED; exit 1; }

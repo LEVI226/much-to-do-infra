@@ -52,6 +52,12 @@ resource "google_project_iam_member" "deployer_iap_tunnel" {
   member  = "serviceAccount:${google_service_account.github_deployer.email}"
 }
 
+resource "google_project_iam_member" "deployer_os_admin_login" {
+  project = var.project_id
+  role    = "roles/compute.osAdminLogin"
+  member  = "serviceAccount:${google_service_account.github_deployer.email}"
+}
+
 resource "google_project_iam_member" "deployer_storage_admin" {
   project = var.project_id
   role    = "roles/storage.objectAdmin"

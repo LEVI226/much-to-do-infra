@@ -17,7 +17,6 @@ locals {
 resource "google_compute_instance_template" "backend" {
   name_prefix  = "much-to-do-backend-${var.environment}-"
   machine_type = var.vm_machine_type
-  region       = var.region
   tags         = ["much-to-do-backend"]
 
   disk {
