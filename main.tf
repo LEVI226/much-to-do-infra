@@ -80,10 +80,6 @@ module "compute" {
   db_name             = var.db_name
   environment         = var.environment
 
-  depends_on = [
-    module.secrets,
-    module.memorystore,
-  ]
 }
 
 # ── 8. External HTTP Load Balancer (Backend API) ──────────────────────────────

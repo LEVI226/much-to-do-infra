@@ -42,11 +42,6 @@ resource "google_compute_instance_template" "backend" {
     enable-oslogin = "TRUE"
   }
 
-  scheduling {
-    on_host_maintenance = "MIGRATE"
-    automatic_restart   = true
-  }
-
   lifecycle {
     create_before_destroy = true
   }
