@@ -9,13 +9,18 @@ output "nat_ip_address" {
 }
 
 output "backend_lb_ip" {
-  description = "External IP of the backend API load balancer"
+  description = "Static external IP of the backend load balancer"
   value       = module.load_balancer.lb_ip
 }
 
-output "backend_url" {
-  description = "Backend API base URL"
-  value       = "http://${module.load_balancer.lb_ip}"
+output "backend_lb_domain" {
+  description = "sslip.io hostname for the backend LB"
+  value       = module.load_balancer.lb_domain
+}
+
+output "backend_https_url" {
+  description = "Backend API HTTPS URL — use as VITE_API_BASE_URL in GitHub Actions"
+  value       = module.load_balancer.backend_https_url
 }
 
 output "firebase_hosting_url" {
@@ -39,7 +44,7 @@ output "log_bucket_name" {
 }
 
 output "wif_provider" {
-  description = "Workload Identity Provider resource name (for GitHub Actions)"
+  description = "Workload Identity Provider resource name (for GitHub Actions secret)"
   value       = module.iam.wif_provider
 }
 
@@ -65,19 +70,26 @@ output "post_deploy_instructions" {
     1. Add NAT IP to MongoDB Atlas allow-list:
        nat_ip_address = ${module.vpc.nat_ip_address}
 
-    2. Set GitHub Actions secrets in LEVI226/much-to-do:
+    2. Wait for SSL certificate to provision (~15-60 min after DNS propagation):
+       gcloud compute ssl-certificates describe much-to-do-ssl-cert-prod \
+         --global --format="get(managed.status,managed.domainStatus)"
+
+    3. Set GitHub Actions secrets in LEVI226/much-to-do:
        GCP_PROJECT_ID          = ${var.project_id}
        GCP_REGION              = ${var.region}
        WIF_PROVIDER            = ${module.iam.wif_provider}
        DEPLOYER_SA_EMAIL       = ${module.iam.deployer_sa_email}
        MIG_NAME                = ${module.compute.mig_name}
-       VITE_API_BASE_URL       = http://${module.load_balancer.lb_ip}
+       VITE_API_BASE_URL       = ${module.load_balancer.backend_https_url}
        FIREBASE_PROJECT_ID     = ${var.project_id}
 
-    3. Deploy Firebase Hosting:
+    4. Deploy Firebase Hosting:
        firebase deploy --only hosting --project ${var.project_id}
 
-    4. Provide grader credentials (read-only):
+    5. Test backend HTTPS endpoint:
+       curl https://${module.load_balancer.lb_domain}/health
+
+    6. Provide grader credentials (read-only):
        gcloud iam service-accounts keys create grader-key.json \
          --iam-account=${module.iam.grader_sa_email} \
          --project=${var.project_id}
