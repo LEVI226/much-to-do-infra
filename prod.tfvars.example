@@ -1,0 +1,13 @@
+# Copy this file to prod.tfvars and fill in the values.
+# prod.tfvars is in .gitignore — NEVER commit it.
+
+project_id  = "project-3af03b27-5270-4519-8d1"
+region      = "us-central1"
+environment = "prod"
+github_repo = "LEVI226/much-to-do"
+
+# MongoDB Atlas connection string (replace with your actual URI)
+mongo_uri = "mongodb+srv://user:pass@cluster.mongodb.net/much_todo_db"
+
+# Generate with: openssl rand -base64 32
+jwt_secret_key = "REPLACE_WITH_STRONG_RANDOM_SECRET"

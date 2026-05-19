@@ -1,0 +1,18 @@
+# Terraform state — use remote GCS backend
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Secrets — never commit
+*.tfvars
+!*.tfvars.example
+
+# GCP credentials
+gcp-credentials.json
+*-key.json
+grader-key.json
+
+# OS
+.DS_Store
+Thumbs.db
